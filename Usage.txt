@@ -1,0 +1,13 @@
+使用方法:
+       點擊install.bat
+       將要修改的xml檔案放進去skill資料夾裡
+       點擊run.bat
+       輸入造型完整代號 (ex:1501 or 15010)
+       完成!(修改後的檔案會在skill裡面)
+
+Usage Instructions:
+      1. Click on install.bat.
+      2. Place the desired XML file into the "skill" folder.
+      3. Click on run.bat.
+      4. Enter the complete code for the desired appearance (e.g., 1501 or 15010).
+      5. Done! (The modified file will be located in the "skill" folder).
