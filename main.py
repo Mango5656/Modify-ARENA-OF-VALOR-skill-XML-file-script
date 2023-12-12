@@ -144,3 +144,69 @@ def process_folder(folder_path):
 
 # 執行處理資料夾的腳本
 process_folder(folder_path)
+
+
+
+def modify_xml_file(file_path):
+    try:
+        tree = ET.parse(file_path)
+        root = tree.getroot()
+
+        # 使用正規表達式修改 value 屬性的路徑
+        for element in root.iter():
+            if 'value' in element.attrib and 'Prefab_Skill_Effects/Hero_Skill_Effects/' in element.attrib['value']:
+                updated_value = re.sub(r'(Prefab_Skill_Effects/Hero_Skill_Effects/)(\w+/)(\w+)', r'\g<1>\g<2>{}/\g<3>'.format(skin_1), element.attrib['value'])
+                element.attrib['value'] = updated_value
+
+        # 修改 Event 元素下的 String 元素中的 resourceName 屬性
+        for track_element in root.iter('Track'):
+            for event_element in track_element.iter('Event'):
+                updated_value = None  # 初始化 updated_value
+                for string_element in event_element.iter('String'):
+                    if 'resourceName' in string_element.attrib and 'Prefab_Skill_Effects/Hero_Skill_Effects/' in string_element.attrib['resourceName']:
+                        updated_resource_name = re.sub(r'(Prefab_Skill_Effects/Hero_Skill_Effects/)(\w+/)(\w+)', r'\g<1>\g<2>{}/\g<3>'.format(skin_1), string_element.attrib['resourceName'])
+                        string_element.attrib['resourceName'] = updated_resource_name
+                        updated_value = updated_resource_name
+                    
+
+                # 將更新後的值設定給 updated_value，以便後續使用
+                if updated_value is not None:
+                    element.attrib['value'] = updated_value
+
+    except ET.ParseError as e:
+        print(f"處理檔案 '{file_path}' 時發生 XML 解析錯誤：{str(e)}")
+        return
+    except Exception as e:
+        print(f"處理檔案 '{file_path}' 時發生錯誤：{str(e)}")
+        return
+
+    # 將更新後的內容寫回檔案
+    tree.write(file_path, encoding='utf-8')
+
+
+
+
+def process_folder(folder_path):
+    try:
+        # 確保資料夾存在
+        if not os.path.exists(folder_path):
+            print(f"資料夾 '{folder_path}' 不存在。")
+            return
+
+        # 遍歷資料夾中的所有檔案
+        for file_name in os.listdir(folder_path):
+            file_path = os.path.join(folder_path, file_name)
+
+            # 只處理XML檔案
+            if file_name.lower().endswith('.xml'):
+                modify_xml_file(file_path)
+
+        print("處理完成。")
+
+    except Exception as e:
+        print(f"發生錯誤：{str(e)}")
+
+
+
+# 執行處理資料夾的腳本
+process_folder(folder_path)
