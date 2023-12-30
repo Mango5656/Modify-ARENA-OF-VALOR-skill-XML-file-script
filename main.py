@@ -77,7 +77,7 @@ process_folder(folder_path)
 
 
 #第二部分
-folder_path=r"C:\Users\rudys\OneDrive\桌面\aov 腳本\skill"
+
 if len(skin) == 4:
     skin_1 = skin[:3] + '0' + skin[-1]
 elif len(skin) == 5:
